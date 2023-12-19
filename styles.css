@@ -5,18 +5,18 @@ body {
 
 h1, h2 {
     text-align: center;
-    font-size: 22px;
 }
 h1 {
-    color: rgb(72, 0, 255);
+    color: rgb(135, 78, 227);
+    font-size: 20px;
 }
 
 h2{
-    color: rgb(210, 86, 107);
+    color: rgb(43, 53, 42);
 }
 
 #entry-form {
-    width: 350px;
+    width: 300px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -24,7 +24,7 @@ h2{
 
 #checker-form {
     margin: 0 auto;
-    width: 350px;
+    width: 300px;
     display: flex;
     flex-direction: column;
 }
@@ -42,7 +42,7 @@ h2{
 }
 
 label{
-    color: rgb(29, 44, 183);
+    color: rgb(88, 89, 94);
 }
 
 input {
