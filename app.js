@@ -20,7 +20,6 @@ document.getElementById('entryBtn').addEventListener('click', () => {
 
     
     document.getElementById('entryMessage').innerText = 'New entry submitted: ' + studentName + ' (Roll: ' + studentRoll + ')';
-
    
     document.getElementById('studentName').value = '';
     document.getElementById('studentRoll').value = '';
