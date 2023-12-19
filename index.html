@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FindS-Check student attendance</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <h1>FindS-Student Attendence Checker</h1>
+        <h2>New Student Entry</h2>
+        <div id="entryMessage"></div>
+        <form id="entry-form" name="student-entry-form">
+                <label for="studentName">Student Name:</label>
+                <input class="inputFields" type="text" id="studentName" name="studentName" placeholder="enter student name" required>
+        
+                <label for="studentRoll">Roll Number:</label>
+                <input placeholder="enter student roll" class="inputFields" type="number" id="studentRoll" name="rollNumber" required>
+        
+                <input id="entryBtn" class="submitBtn" type="submit" value="Submit">
+        </form>
+
+        <h2>Check Students</h2>
+        <div id="checkMessage"></div>
+        <form id="checker-form" name="student-checker-form">
+            <label for="searchRoll">Enter Roll Number:</label>
+            <textarea type="text" id="searchRoll" name="searchRoll" rows="5" required></textarea>
+
+            <input id="checkBtn" class="submitBtn" type="submit" value="Check">
+        </form>
+
+    </main>
+
+    <footer>
+        <p>&copy;2023 developed by Protyasha</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

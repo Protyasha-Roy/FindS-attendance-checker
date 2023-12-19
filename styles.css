@@ -1,0 +1,60 @@
+body {
+    background-color: rgb(241, 240, 240);
+}
+
+
+h1, h2 {
+    text-align: center;
+    font-size: 22px;
+}
+h1 {
+    color: rgb(72, 0, 255);
+}
+
+h2{
+    color: rgb(210, 86, 107);
+}
+
+#entry-form {
+    width: 350px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#checker-form {
+    margin: 0 auto;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+}
+
+.submitBtn {
+    background-color: green;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+}
+
+.inputFields{
+    padding: 10px;
+}
+
+label{
+    color: rgb(29, 44, 183);
+}
+
+input {
+    margin-top: 5px;
+}
+
+#entryMessage, #checkMessage {
+    text-align: center;
+    color: red;
+}
+
+p{
+    text-align: center;
+    color: gray;
+}
