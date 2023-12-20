@@ -83,7 +83,7 @@ addAttendanceBtn.addEventListener('click', async (event) => {
 
     try {
         // Post attendance record to the server
-        const addAttendanceResponse = await fetch('https://finds-attendance-checker.vercel.app/addAttendance', {
+        const addAttendanceResponse = await fetch('https://finds-server.onrender.com/addAttendance', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

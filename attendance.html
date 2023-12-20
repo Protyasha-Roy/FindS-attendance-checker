@@ -43,7 +43,7 @@
 
             try {
                 // Fetch attendance data from the server for the specific userId
-                const response = await fetch(`https://finds-attendance-checker.vercel.app/get-attendance?userId=${userId}`);
+                const response = await fetch(`https://finds-server.onrender.com/get-attendance?userId=${userId}`);
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch attendance data');
