@@ -33,6 +33,10 @@
             background-color: #f2f2f2;
         }
 
+        p{
+            color: green;
+        }
+
         @media screen and (min-width: 700px) {
             table {
                 width: 60%;
@@ -44,37 +48,60 @@
 <body>
 
     <h1>All Students</h1>
-
+    <p id="deleteMessage"></p>
     <table>
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Roll</th>
+                <th>Options</th>
             </tr>
         </thead>
         <tbody id="studentsTableBody"></tbody>
     </table>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        const createStudentsList = () => {
             const studentsData = JSON.parse(localStorage.getItem('students')) || [];
+            const deleteMessage = document.getElementById('deleteMessage');
 
             const tableBody = document.getElementById('studentsTableBody');
 
-            studentsData.forEach(student => {
+            tableBody.innerHTML = '';
+
+            studentsData.forEach((student) => {
                 const row = document.createElement('tr');
                 const nameCell = document.createElement('td');
                 const rollCell = document.createElement('td');
+                const optionCell = document.createElement('td');
 
                 nameCell.textContent = student.name;
                 rollCell.textContent = student.roll;
+                optionCell.textContent = 'Delete';
+                optionCell.style.color = 'red';
+                optionCell.style.border = '1px solid red'
+                optionCell.style.textAlign = 'center';
+                optionCell.style.cursor = 'pointer';
+
+                optionCell.addEventListener('click', (e) => {
+                    const newStudentList = studentsData.filter(students => students.name !== student.name);
+
+                    localStorage.setItem('students', JSON.stringify(newStudentList));
+                    
+                    deleteMessage.innerText = 'Student Information Deleted, refresh to see the updated list!'
+                });
 
                 row.appendChild(nameCell);
                 row.appendChild(rollCell);
+                row.appendChild(optionCell);
 
                 tableBody.appendChild(row);
             });
-        });
+        }
+        
+    document.addEventListener('click', createStudentsList());
+
+
     </script>
 
 </body>
