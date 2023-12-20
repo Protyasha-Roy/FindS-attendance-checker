@@ -15,16 +15,10 @@ h2{
     color: rgb(43, 53, 42);
 }
 
-#entry-form {
-    width: 300px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-}
 
-#checker-form {
+#entry-form, #checker-form {
     margin: 0 auto;
-    width: 300px;
+    width: 90%;
     display: flex;
     flex-direction: column;
 }
@@ -64,4 +58,10 @@ p{
 a{
     text-align: center;
     display: block;
+}
+
+@media screen and (min-width: 700px) {
+    #entry-form, #checker-form{
+        width: 40%;
+    }
 }
