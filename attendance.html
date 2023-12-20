@@ -1,0 +1,79 @@
+<!-- attendance.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: blue;
+        }
+        h2 {
+            color: green;
+            margin-top: 20px;
+        }
+        h3 {
+            color: black;
+            margin-top: 10px;
+        }
+        footer p {
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Attendance Records</h1>
+    <div id="attendanceData"></div>
+    <footer>
+        <p>&copy;2023 developed by Protyasha</p>
+    </footer>
+
+    <script>
+        const displayAttendanceData = async () => {
+            const userId = localStorage.getItem('userId');
+            const attendanceDataContainer = document.getElementById('attendanceData');
+
+            try {
+                // Fetch attendance data from the server for the specific userId
+                const response = await fetch(`https://finds-attendance-checker.vercel.app/get-attendance?userId=${userId}`);
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch attendance data');
+                }
+
+                const attendanceData = await response.json();
+
+                // Clear the attendance data container
+                attendanceDataContainer.innerHTML = '';
+
+                attendanceData.forEach((attendanceRecord) => {
+                    const dateHeader = document.createElement('h2');
+                    dateHeader.textContent = `Date: ${attendanceRecord.date}`;
+                    attendanceDataContainer.appendChild(dateHeader);
+
+                    const presentRollsHeader = document.createElement('h3');
+                    presentRollsHeader.textContent = `Present Rolls: ${attendanceRecord.presentRolls.join(', ')}`;
+                    attendanceDataContainer.appendChild(presentRollsHeader);
+
+                    const absentRollsHeader = document.createElement('h3');
+                    absentRollsHeader.textContent = `Absent Rolls: ${attendanceRecord.absentRolls.join(', ')}`;
+                    attendanceDataContainer.appendChild(absentRollsHeader);
+                });
+            } catch (error) {
+                console.error('Error fetching attendance data:', error);
+                attendanceDataContainer.innerHTML = '<p>Failed to fetch attendance data</p>';
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', displayAttendanceData);
+    </script>
+</body>
+</html>

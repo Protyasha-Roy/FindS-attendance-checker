@@ -67,7 +67,6 @@ checkBtn.addEventListener('click', async (event) => {
         checkMessage.innerText = 'Error checking rolls.';
     }
 
-    searchRollField.value = '';
 });
 
 
@@ -84,7 +83,7 @@ addAttendanceBtn.addEventListener('click', async (event) => {
 
     try {
         // Post attendance record to the server
-        const addAttendanceResponse = await fetch('http://localhost:10000/addAttendance', {
+        const addAttendanceResponse = await fetch('https://finds-attendance-checker.vercel.app/addAttendance', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -99,7 +98,9 @@ addAttendanceBtn.addEventListener('click', async (event) => {
             throw new Error('Failed to add attendance');
         }
 
-        document.getElementById('checkMessage').innerText = 'Attendance added successfully.';
+        const data = await addAttendanceResponse.json();
+
+        document.getElementById('checkMessage').innerText = data.message;
         searchRollField.value = '';
 
 
