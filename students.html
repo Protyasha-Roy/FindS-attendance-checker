@@ -54,6 +54,7 @@
     <h1>All Students</h1>
     <p id="deleteMessage"></p>
     <table>
+        <div id="total"></div>
         <thead>
             <tr>
                 <th>Name</th>
@@ -73,6 +74,7 @@
     const userId = localStorage.getItem('userId');
     const deleteMessage = document.getElementById('deleteMessage');
     const tableBody = document.getElementById('studentsTableBody');
+    const total = document.getElementById('total');
     
     try {
         // Fetch students data from the server for the specific userId
@@ -83,6 +85,8 @@
         }
         
         const studentsData = await response.json();
+
+        total.innerText = `Total: ${studentsData.length}`
 
         // Clear the table body
         tableBody.innerHTML = '';

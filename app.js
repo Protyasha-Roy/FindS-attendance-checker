@@ -1,61 +1,6 @@
-// let savedStudents = JSON.parse(localStorage.getItem('students')) || [];
-
-
-// document.getElementById('entryBtn').addEventListener('click', (event) => {
-//     event.preventDefault();
-//     const studentName = document.getElementById('studentName').value.trim();
-//     const studentRoll = document.getElementById('studentRoll').value.trim();
-
-
-//     if (studentName === '' || studentRoll === '') {
-//         document.getElementById('entryMessage').innerText = 'Please fill both fields before submitting.';
-//         return;
-//     }
-
-//     const existingStudent = savedStudents.find(student => student.roll === studentRoll);
-
-//     if (existingStudent) {
-//         document.getElementById('entryMessage').innerText = 'A student with this roll already exists.';
-//         return;
-//     }
-
-//     const newStudent = { name: studentName, roll: studentRoll };
-
-//     savedStudents.push(newStudent);
-
-    
-//     localStorage.setItem('students', JSON.stringify(savedStudents));
-
-    
-//     document.getElementById('entryMessage').innerText = 'New entry submitted: ' + studentName + ' (Roll: ' + studentRoll + ')';
-   
-//     document.getElementById('studentName').value = '';
-//     document.getElementById('studentRoll').value = '';
-// });
-
-// document.getElementById('checkBtn').addEventListener('click', () => {
-//     const searchRollInput = document.getElementById('searchRoll').value.trim();
-//     const searchRolls = searchRollInput.split(',').map(roll => roll.trim());
-
-//     if (searchRollInput === '') {
-//         document.getElementById('checkMessage').innerText = 'Please fill the textarea before checking.';
-//         return;
-//     }
-
-//     const mismatchedRolls = searchRolls.filter(searchRoll => {
-//         return !savedStudents.some(student => student.roll == searchRoll);
-//     });
-
-//     if (mismatchedRolls.length > 0) {
-//         document.getElementById('checkMessage').innerText = 'Mismatched Rolls: ' + mismatchedRolls.join(', ');
-//     } else {
-//         document.getElementById('checkMessage').innerText = 'All Rolls Matched!';
-//     }
-
-//     document.getElementById('searchRoll').value = '';
-// });
 const entryBtn = document.getElementById('entryBtn');
 const checkBtn = document.getElementById('checkBtn');
+const addAttendanceBtn = document.getElementById('addAttendanceBtn');
 const searchRollField = document.getElementById('searchRoll');
 const entryMessage = document.getElementById('entryMessage');
 const checkMessage = document.getElementById('checkMessage');
@@ -123,4 +68,43 @@ checkBtn.addEventListener('click', async (event) => {
     }
 
     searchRollField.value = '';
+});
+
+
+addAttendanceBtn.addEventListener('click', async (event) => {
+    event.preventDefault();
+    const userId = localStorage.getItem('userId');
+    const searchRollInput = document.getElementById('searchRoll').value.trim();
+    const searchRolls = searchRollInput.split(',').map(roll => roll.trim());
+
+    if (searchRollInput === '') {
+        document.getElementById('checkMessage').innerText = 'Please fill the textarea before checking.';
+        return;
+    }
+
+    try {
+        // Post attendance record to the server
+        const addAttendanceResponse = await fetch('http://localhost:10000/addAttendance', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userId: userId,
+                rolls: searchRolls,
+            }),
+        });
+
+        if (!addAttendanceResponse.ok) {
+            throw new Error('Failed to add attendance');
+        }
+
+        document.getElementById('checkMessage').innerText = 'Attendance added successfully.';
+        searchRollField.value = '';
+
+
+    } catch (error) {
+        console.error('Error adding attendance:', error);
+        document.getElementById('checkMessage').innerText = 'Failed to add attendance';
+    }
 });
