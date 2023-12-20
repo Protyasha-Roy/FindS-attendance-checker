@@ -73,7 +73,7 @@ entryBtn.addEventListener('click', async (event) => {
     }
 
     try {
-        const response = await fetch(`http://localhost:10000/add-student`, {
+        const response = await fetch(`https://finds-server.onrender.com/add-student`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ checkBtn.addEventListener('click', async (event) => {
     }
 
     try {
-        const response = await fetch('http://localhost:10000/check-rolls', {
+        const response = await fetch('https://finds-server.onrender.com/check-rolls', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
