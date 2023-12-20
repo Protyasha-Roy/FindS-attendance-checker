@@ -18,7 +18,7 @@
         }
 
         table {
-            width: 75%;
+            width: 90%;
             border-collapse: collapse;
             margin-top: 20px;
         }
@@ -31,6 +31,12 @@
 
         th {
             background-color: #f2f2f2;
+        }
+
+        @media screen and (min-width: 700px) {
+            table {
+                width: 60%;
+            }
         }
 
     </style>
@@ -51,13 +57,10 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Retrieve student data from local storage
             const studentsData = JSON.parse(localStorage.getItem('students')) || [];
 
-            // Get the table body element
             const tableBody = document.getElementById('studentsTableBody');
 
-            // Populate the table with student data
             studentsData.forEach(student => {
                 const row = document.createElement('tr');
                 const nameCell = document.createElement('td');
