@@ -31,6 +31,7 @@
 </head>
 <body>
     <h1>Attendance Records</h1>
+    <div id="total"></div>
     <div id="attendanceData"></div>
     <footer>
         <p>&copy;2023 developed by Protyasha</p>
@@ -40,6 +41,7 @@
         const displayAttendanceData = async () => {
             const userId = localStorage.getItem('userId');
             const attendanceDataContainer = document.getElementById('attendanceData');
+            const total = document.getElementById('total');
 
             try {
                 // Fetch attendance data from the server for the specific userId
@@ -50,6 +52,8 @@
                 }
 
                 const attendanceData = await response.json();
+
+                total.innerText = `Total: ${attendanceData.length}`;
 
                 // Clear the attendance data container
                 attendanceDataContainer.innerHTML = '';
