@@ -55,9 +55,10 @@ p{
     color: gray;
 }
 
-a{
-    text-align: center;
-    display: block;
+.nav{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 @media screen and (min-width: 700px) {
