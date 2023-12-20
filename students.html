@@ -37,6 +37,10 @@
             color: green;
         }
 
+        footer p{
+            color: gray;
+        }
+
         @media screen and (min-width: 700px) {
             table {
                 width: 60%;
@@ -60,46 +64,83 @@
         <tbody id="studentsTableBody"></tbody>
     </table>
 
+    <footer>
+        <p>&copy;2023 developed by Protyasha</p>
+    </footer>
+
     <script>
-        const createStudentsList = () => {
-            const studentsData = JSON.parse(localStorage.getItem('students')) || [];
-            const deleteMessage = document.getElementById('deleteMessage');
-
-            const tableBody = document.getElementById('studentsTableBody');
-
-            tableBody.innerHTML = '';
-
-            studentsData.forEach((student) => {
-                const row = document.createElement('tr');
-                const nameCell = document.createElement('td');
-                const rollCell = document.createElement('td');
-                const optionCell = document.createElement('td');
-
-                nameCell.textContent = student.name;
-                rollCell.textContent = student.roll;
-                optionCell.textContent = 'Delete';
-                optionCell.style.color = 'red';
-                optionCell.style.border = '1px solid red'
-                optionCell.style.textAlign = 'center';
-                optionCell.style.cursor = 'pointer';
-
-                optionCell.addEventListener('click', (e) => {
-                    const newStudentList = studentsData.filter(students => students.name !== student.name);
-
-                    localStorage.setItem('students', JSON.stringify(newStudentList));
-                    
-                    deleteMessage.innerText = 'Student Information Deleted, refresh to see the updated list!'
-                });
-
-                row.appendChild(nameCell);
-                row.appendChild(rollCell);
-                row.appendChild(optionCell);
-
-                tableBody.appendChild(row);
-            });
+       const createStudentsList = async () => {
+    const userId = localStorage.getItem('userId');
+    const deleteMessage = document.getElementById('deleteMessage');
+    const tableBody = document.getElementById('studentsTableBody');
+    
+    try {
+        // Fetch students data from the server for the specific userId
+        const response = await fetch(`http://localhost:10000/get-students?userId=${userId}`);
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch students data');
         }
         
-    document.addEventListener('click', createStudentsList());
+        const studentsData = await response.json();
+
+        // Clear the table body
+        tableBody.innerHTML = '';
+
+        studentsData.forEach((student, index) => {
+            const row = document.createElement('tr');
+            const nameCell = document.createElement('td');
+            const rollCell = document.createElement('td');
+            const optionCell = document.createElement('td');
+
+            nameCell.textContent = student.name;
+            rollCell.textContent = student.roll;
+            optionCell.textContent = 'Delete';
+            optionCell.style.color = 'red';
+            optionCell.style.border = '1px solid red';
+            optionCell.style.textAlign = 'center';
+            optionCell.style.cursor = 'pointer';
+
+            optionCell.addEventListener('click', async (e) => {
+                try {
+                    // Delete the student data on the server
+                    const deleteResponse = await fetch(`http://localhost:10000/delete-student`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ userId, roll: student.roll }),
+                    });
+
+                    if (!deleteResponse.ok) {
+                        throw new Error('Failed to delete student data');
+                    }
+
+                    // Update the UI to remove the deleted student
+                    const newStudentList = studentsData.filter(st => st.roll !== student.roll);
+                    tableBody.innerHTML = ''; // Clear the table
+                    createStudentsList(); // Refresh the student list
+
+                    deleteMessage.innerText = 'Student Information Deleted!';
+                } catch (error) {
+                    console.error('Error deleting student:', error);
+                    deleteMessage.innerText = 'Failed to delete student information';
+                }
+            });
+
+            row.appendChild(nameCell);
+            row.appendChild(rollCell);
+            row.appendChild(optionCell);
+
+            tableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error fetching students:', error);
+        deleteMessage.innerText = 'Failed to fetch students data';
+    }
+};
+
+document.addEventListener('DOMContentLoaded', createStudentsList);
 
 
     </script>
