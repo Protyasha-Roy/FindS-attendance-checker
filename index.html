@@ -17,88 +17,49 @@
                 <input type="email" id="userEmail" name="userEmail" required>
                 <label for="userPassword">Password:</label>
                 <input type="password" id="userPassword" name="userPassword" required>
-                <button type="button" id="submitBtn">Sign In</button>
-                <div id="alertMessage" class="alert-message"></div>
+                <button type="button" onclick="signIn()" id="submitBtn">Sign In</button>
+                <div id="signInMessage" class="alert-message"></div>
             </form>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-    const signupForm = document.getElementById('signupForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const alertMessage = document.getElementById('alertMessage');
+       async function signIn() {
+        const email = document.getElementById('userEmail').value;
+        const password = document.getElementById('userPassword').value;
 
-    submitBtn.addEventListener('click', function () {
-        const userEmail = document.getElementById('userEmail').value.trim();
-        const userPassword = document.getElementById('userPassword').value.trim();
-
-        // Check if any of the fields are empty
-        if (!userEmail || !userPassword) {
-            showAlert('Please fill in all fields.');
-            return;
+    
+      if (!email || !password) {
+        document.getElementById('signInMessage').innerText = 'Fill in all the fields';
+        return;
+      }
+      else {
+        try {
+          const response = await fetch('http://localhost:10000/signin', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+          });
+    
+          const data = await response.json();
+    
+          if (response.ok) {
+            // Save user ID to localStorage
+            localStorage.setItem('userId', data.userId);
+            window.location.href = '/home.html';
+          } else {
+            document.getElementById('signInMessage').innerText = `Error: ${data.message}`;
+          }
+        } catch (error) {
+          console.error('Error during sign in:', error);
+          document.getElementById('signInMessage').innerText = 'Internal Server Error';
         }
-
-        // Simulate server response (replace with actual server communication)
-        const serverResponse = simulateServerResponse(userEmail, userPassword);
-
-        // Handle the server response
-        handleServerResponse(serverResponse);
-    });
-
-    function showAlert(message) {
-        alertMessage.textContent = message;
-        alertMessage.style.display = 'block';
-    }
-
-    function hideAlert() {
-        alertMessage.textContent = '';
-        alertMessage.style.display = 'none';
-    }
-
-    function simulateServerResponse(email, password) {
-        // Simulating server response
-        // In a real-world scenario, this is where you would make an AJAX request to the server
-        // and get the response.
-        const existingUsers = [
-            { email: 'user1@example.com', password: 'pass1' },
-            { email: 'user2@example.com', password: 'pass2' }
-            // Add more users as needed
-        ];
-
-        const existingUser = existingUsers.find(user => user.email === email);
-
-        if (existingUser) {
-            // Email already exists
-            if (existingUser.password === password) {
-                // Password matches, redirect to home page
-                return { success: true, message: 'Redirecting to home page...' };
-            } else {
-                // Password does not match
-                return { success: false, message: 'Password does not match.' };
-            }
-        } else {
-            // New user, add to the server (simulated here)
-            existingUsers.push({ email, password });
-            // Redirect to home page for new user
-            return { success: true, message: 'Redirecting to home page...' };
-        }
-    }
-
-    function handleServerResponse(response) {
-        if (response.success) {
-            // Successful signup or login, redirect to home page
-            hideAlert();
-        
-            // Redirect to home page (replace with your actual home page URL)
-            window.location.href = 'home.html';
-        } else {
-            // Display error message
-            showAlert(response.message);
-        }
-    }
-});
-
+      }
+    
+  }
+ 
     </script>
 </body>
 </html>
