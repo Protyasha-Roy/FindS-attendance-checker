@@ -3,41 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FindS-Check student attendance</title>
     <link rel="stylesheet" href="styles.css">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="signupStyles.css">
 </head>
 <body>
-    <main>
-        <h1>Student Attendance Checker</h1>
-        <a target="_blank" href="students.html">all students</a>
 
-        <h2>New Student Entry</h2>
-        <div id="entryMessage"></div>
-        <form id="entry-form" name="student-entry-form">
-                <label for="studentName">Student Name:</label>
-                <input class="inputFields" type="text" id="studentName" name="studentName" placeholder="enter student name" required>
+    <div class="container">
+        <div class="form-container">
+            <form id="signupForm" class="auth-form">
+                <h2>Sign Ip</h2>
+                <label for="userEmail">Email:</label>
+                <input type="email" id="userEmail" name="userEmail" required>
+                <label for="userPassword">Password:</label>
+                <input type="password" id="userPassword" name="userPassword" required>
+                <button type="button" id="submitBtn">Sign In</button>
+                <div id="alertMessage" class="alert-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    const signupForm = document.getElementById('signupForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const alertMessage = document.getElementById('alertMessage');
+
+    submitBtn.addEventListener('click', function () {
+        const userEmail = document.getElementById('userEmail').value.trim();
+        const userPassword = document.getElementById('userPassword').value.trim();
+
+        // Check if any of the fields are empty
+        if (!userEmail || !userPassword) {
+            showAlert('Please fill in all fields.');
+            return;
+        }
+
+        // Simulate server response (replace with actual server communication)
+        const serverResponse = simulateServerResponse(userEmail, userPassword);
+
+        // Handle the server response
+        handleServerResponse(serverResponse);
+    });
+
+    function showAlert(message) {
+        alertMessage.textContent = message;
+        alertMessage.style.display = 'block';
+    }
+
+    function hideAlert() {
+        alertMessage.textContent = '';
+        alertMessage.style.display = 'none';
+    }
+
+    function simulateServerResponse(email, password) {
+        // Simulating server response
+        // In a real-world scenario, this is where you would make an AJAX request to the server
+        // and get the response.
+        const existingUsers = [
+            { email: 'user1@example.com', password: 'pass1' },
+            { email: 'user2@example.com', password: 'pass2' }
+            // Add more users as needed
+        ];
+
+        const existingUser = existingUsers.find(user => user.email === email);
+
+        if (existingUser) {
+            // Email already exists
+            if (existingUser.password === password) {
+                // Password matches, redirect to home page
+                return { success: true, message: 'Redirecting to home page...' };
+            } else {
+                // Password does not match
+                return { success: false, message: 'Password does not match.' };
+            }
+        } else {
+            // New user, add to the server (simulated here)
+            existingUsers.push({ email, password });
+            // Redirect to home page for new user
+            return { success: true, message: 'Redirecting to home page...' };
+        }
+    }
+
+    function handleServerResponse(response) {
+        if (response.success) {
+            // Successful signup or login, redirect to home page
+            hideAlert();
         
-                <label for="studentRoll">Roll Number:</label>
-                <input placeholder="enter student roll" class="inputFields" type="number" id="studentRoll" name="rollNumber" required>
-        
-                <input id="entryBtn" class="submitBtn" type="submit" value="Submit">
-        </form>
+            // Redirect to home page (replace with your actual home page URL)
+            window.location.href = 'home.html';
+        } else {
+            // Display error message
+            showAlert(response.message);
+        }
+    }
+});
 
-        <h2>Check Students</h2>
-        <div id="checkMessage"></div>
-        <form id="checker-form" name="student-checker-form">
-            <label for="searchRoll">Enter Roll Numbers Separated by Comma:</label>
-            <textarea type="text" id="searchRoll" name="searchRoll" rows="7" required></textarea>
-
-            <input id="checkBtn" class="submitBtn" type="submit" value="Check">
-        </form>
-
-    </main>
-
-    <footer>
-        <p>&copy;2023 developed by Protyasha</p>
-    </footer>
-
-    <script src="app.js"></script>
+    </script>
 </body>
 </html>
